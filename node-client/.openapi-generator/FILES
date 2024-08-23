@@ -1,0 +1,12 @@
+.gitignore
+.openapi-generator-ignore
+api.ts
+api/apis.ts
+api/defaultApi.ts
+git_push.sh
+model/institutionsSearchPost200Response.ts
+model/institutionsSearchPost200ResponseInstitutionsInner.ts
+model/institutionsSearchPostRequest.ts
+model/institutionsSearchPostRequestOptions.ts
+model/institutionsSearchPostRequestOptionsPaymentInitiation.ts
+model/models.ts
