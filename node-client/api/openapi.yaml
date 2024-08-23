@@ -1,0 +1,223 @@
+openapi: 3.0.0
+info:
+  title: Plaid SDK Assignment
+  version: 1.0.0
+servers:
+- url: http://localhost:3000
+paths:
+  /institutions/search:
+    post:
+      operationId: institutionsSearchPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_institutions_search_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_institutions_search_post_200_response'
+          description: Successful operation
+        "400":
+          description: Invalid request
+        "500":
+          description: Server error
+      security:
+      - clientId: []
+      - secret: []
+      summary: list institutions
+      x-eov-operation-handler: controllers/DefaultController
+components:
+  schemas:
+    _institutions_search_post_200_response_institutions_inner:
+      example:
+        routing_numbers:
+        - routing_numbers
+        - routing_numbers
+        dtc_numbers:
+        - dtc_numbers
+        - dtc_numbers
+        name: name
+        country_codes:
+        - country_codes
+        - country_codes
+        oauth: true
+        institution_id: institution_id
+        products:
+        - products
+        - products
+      properties:
+        country_codes:
+          items:
+            type: string
+          type: array
+        dtc_numbers:
+          items:
+            type: string
+          type: array
+        institution_id:
+          type: string
+        name:
+          type: string
+        oauth:
+          type: boolean
+        products:
+          items:
+            type: string
+          type: array
+        routing_numbers:
+          items:
+            type: string
+          type: array
+      type: object
+    _institutions_search_post_200_response:
+      example:
+        institutions:
+        - routing_numbers:
+          - routing_numbers
+          - routing_numbers
+          dtc_numbers:
+          - dtc_numbers
+          - dtc_numbers
+          name: name
+          country_codes:
+          - country_codes
+          - country_codes
+          oauth: true
+          institution_id: institution_id
+          products:
+          - products
+          - products
+        - routing_numbers:
+          - routing_numbers
+          - routing_numbers
+          dtc_numbers:
+          - dtc_numbers
+          - dtc_numbers
+          name: name
+          country_codes:
+          - country_codes
+          - country_codes
+          oauth: true
+          institution_id: institution_id
+          products:
+          - products
+          - products
+        request_id: request_id
+      properties:
+        institutions:
+          items:
+            $ref: '#/components/schemas/_institutions_search_post_200_response_institutions_inner'
+          type: array
+        request_id:
+          type: string
+      type: object
+    _institutions_search_post_request:
+      properties:
+        query:
+          description: The search query. Institutions with names matching the query
+            are returned
+          type: string
+        country_codes:
+          description: Specify which country or countries to include institutions
+            from
+          example:
+          - US
+          - GB
+          items:
+            enum:
+            - US
+            - GB
+            - ES
+            - NL
+            - FR
+            - IE
+            - CA
+            - DE
+            - IT
+            - PL
+            - DK
+            - "false"
+            - SE
+            - EE
+            - LT
+            - LV
+            - PT
+            - BE
+            type: string
+          type: array
+        products:
+          description: Filter the Institutions based on whether they support all products
+            listed in products
+          example:
+          - transactions
+          - auth
+          items:
+            enum:
+            - assets
+            - auth
+            - balance
+            - employment
+            - identity
+            - income_verification
+            - investments
+            - liabilities
+            - identity_verification
+            - payment_initiation
+            - standing_orders
+            - transactions
+            - transfer
+            type: string
+          type: array
+        options:
+          $ref: '#/components/schemas/_institutions_search_post_request_options'
+      required:
+      - country_codes
+      - query
+      type: object
+    _institutions_search_post_request_options_payment_initiation:
+      description: Additional options to filter institutions by various Payment Initiation
+        configurations.
+      properties:
+        payment_id:
+          description: A unique ID identifying the payment.
+          type: string
+        consent_id:
+          description: A unique ID identifying the payment consent.
+          type: string
+      type: object
+    _institutions_search_post_request_options:
+      description: An optional object to filter /institutions/search results
+      properties:
+        oauth:
+          description: Limit results to institutions with or without OAuth login flows.
+          type: boolean
+        include_optional_metadata:
+          description: "When true, return the institution's homepage URL, logo, and\
+            \ primary brand color."
+          type: boolean
+        include_auth_metadata:
+          default: false
+          description: "When true, returns metadata related to the Auth product indicating\
+            \ which auth methods are supported."
+          type: boolean
+        include_payment_initiation_metadata:
+          default: false
+          description: "When true, returns metadata related to the Payment Initiation\
+            \ product indicating which payment configurations are supported."
+          type: boolean
+        payment_initiation:
+          $ref: '#/components/schemas/_institutions_search_post_request_options_payment_initiation'
+      type: object
+  securitySchemes:
+    clientId:
+      in: header
+      name: PLAID-CLIENT-ID
+      type: apiKey
+    secret:
+      in: header
+      name: PLAID-SECRET
+      type: apiKey
