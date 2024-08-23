@@ -8,6 +8,21 @@ paths:
   /institutions/search:
     post:
       operationId: institutionsSearchPOST
+      parameters:
+      - explode: false
+        in: header
+        name: PLAID-CLIENT-ID
+        required: false
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: PLAID-SECRET
+        required: false
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:

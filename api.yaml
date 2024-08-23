@@ -7,6 +7,17 @@ servers:
 paths:
   /institutions/search:
     post:
+      parameters:
+        - in: header
+          name: PLAID-CLIENT-ID
+          required: false # Set to false if not required
+          schema:
+            type: string
+        - in: header
+          name: PLAID-SECRET
+          required: false # Set to false if not required
+          schema:
+            type: string
       summary: list institutions
       requestBody:
         required: true
